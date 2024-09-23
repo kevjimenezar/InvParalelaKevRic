@@ -1,0 +1,3 @@
+C:/Users/Kevin/OneDrive/Escritorio/Universidad/CICLO 8/PrograParalela/InvProyecto/cmake-build-debug/CMakeFiles/InvProyecto.dir
+C:/Users/Kevin/OneDrive/Escritorio/Universidad/CICLO 8/PrograParalela/InvProyecto/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Kevin/OneDrive/Escritorio/Universidad/CICLO 8/PrograParalela/InvProyecto/cmake-build-debug/CMakeFiles/rebuild_cache.dir
