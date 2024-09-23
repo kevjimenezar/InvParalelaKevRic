@@ -11,6 +11,9 @@
 -- Check for working CXX compiler: C:/Program Files/JetBrains/CLion 2021.3.4/bin/mingw/bin/g++.exe - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
+-- Found OpenMP_C: -fopenmp (found version "4.5") 
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Found OpenMP: TRUE (found version "4.5")  
 -- Configuring done
 -- Generating done
 -- Build files have been written to: C:/Users/Kevin/OneDrive/Escritorio/Universidad/CICLO 8/PrograParalela/InvProyecto/cmake-build-debug

@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <omp.h>
 using namespace std;
 
 // Función para generar un vector de números aleatorios
@@ -29,19 +30,31 @@ vector<int> genFibonacci(int limit) {
     return fib;
 }
 
-// Función para encontrar los numeros de fibonacci en el vector random sin repetidos
+// Función para eliminar duplicados y ordenar
+vector<int> deleteDup(vector<int>& result) {
+    auto it = unique(result.begin(), result.end()); // Eliminar de duplicados
+    result.resize(distance(result.begin(), it));
+    result.insert(result.begin() + 1, 1); // Se agrega el 1 ya que se repite en la secuencia
+    sort(result.begin(), result.end());
+    return result;
+}
+
+// Función para encontrar los numeros de fibonacci en el vector random
 vector<int> findCoincidences(const vector<int>& vec, const vector<int>& fib) {
     vector<int> result;
-    for (int num : vec) {
-        auto n = find(fib.begin(), fib.end(), num); // Verificacion de numero del vector random en fib
-        if (n != fib.end()) { // Verificacion ya que si no se encuentra devuelve el final de fib
-            result.push_back(num);
+    #pragma omp parallel default(none) shared(vec, fib, result) // Inicio del proceso en paralelo
+    {
+        #pragma omp for // Se procesa ya en paralelo el bucle for
+        for (int num: vec) {
+            if (find(fib.begin(), fib.end(), num) != fib.end()) { // Verificacion ya que si no se encuentra devuelve el final de fib
+                #pragma omp critical // Proporciona seguridad de acceso al vector con varios hilos
+                {
+                    result.push_back(num);
+                }
+            }
         }
     }
-    auto it = unique(result.begin(), result.end()); // Eliminacion de duplicados
-    result.resize(distance(result.begin(), it));
-    result.insert(result.begin() + 1,1); //Se agrega el 1 ya que se repite en la secuencia
-    return result;
+    return deleteDup(result);
 }
 
 
