@@ -67,14 +67,13 @@ int main() {
     vector<int> fib = genFibonacci(n);
     vector<int> coinc = findCoincidences(randomVector,fib);
 
-    cout<<endl<<endl;
+    cout<<"Los números originales de la sucesión de Fibonacci son:"<<endl;
     for (int num : fib) {
         cout << num << " ";
     }
 
     cout<<endl<<endl;
-    cout<<endl<<endl;
-    cout<<endl<<endl;
+    cout<<"Los números que contrastados coinciden con la suceción de Fibonacci son:"<<endl;
     for (int num : coinc) {
         cout << num << " ";
     }
