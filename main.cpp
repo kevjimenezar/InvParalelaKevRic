@@ -67,8 +67,8 @@ vector<double> calcGoldenRatio(const vector<int>& fib) {
     int size = fib.size();
     
     #pragma omp parallel for // Procesar en paralelo
-    for (int i = 2; i < size; i++) { // Comenzamos desde el tercer número
-        double ratio = static_cast<double>(fib[i]) / fib[i - 1]; // Calculo de la razón
+    for (int i = 2; i < size; i++) {
+        double ratio = static_cast<double>(fib[i]) / fib[i - 1];
         #pragma omp critical // Sección crítica para evitar condiciones de carrera
         {
             aproxs.push_back(ratio);
@@ -85,33 +85,55 @@ class Flower {
     };
     
     std::vector<Flower> defineFlowers() {
-        return {
-            {"Margarita", 34},
-            {"Girasol", 55},
-            {"Rosa común", 5},
-            {"Lirio", 3},
-            {"Jacinto", 8},
-            {"Flor de loto", 13},
-            {"Margarita gigante", 89}
-        };
-    }
+    return {
+        {"Margarita común", 13},
+        {"Margarita gigante", 34},
+        {"Girasol", 55},
+        {"Rosa", 5},
+        {"Lirio", 3},
+        {"Jacinto", 8},
+        {"Flor de loto", 13},
+        {"Tulipan", 3},
+        {"Amapola", 4},
+        {"Dalia", 13},
+        {"Crisantemo", 13},
+        {"Orquídea", 3},
+        {"Azucena", 6},
+        {"Clavel", 5},
+        {"Campanilla", 5},
+        {"Pensamiento", 5},
+        {"Geranio", 5},
+        {"Violeta", 5}
+    };
+}
     
-    // Función para comprobar si los pétalos de una flor se encuentran en la suceción
+    // Función para comprobar si la cantidad de pétalos de una flor se encuentran en la suceción
     bool isFibonacci(int petals, const vector<int>& coinc) {
-    return find(coinc.begin(), coinc.end(), petals) != coinc.end(); //Buscamos en la sucesión depurada
+    bool found = false;
+    #pragma omp parallel for shared(coinc, petals) // Clausula de datos: TODOS LOS HILOS TIENEN ACCESO ya que no modifican
+    for (size_t i = 0; i < coinc.size(); i++) {
+        if (coinc[i] == petals) {
+            #pragma omp critical
+            {
+                found = true;
+            }
+        }
+    }
+    return found;
 }
 
+//Revisa el vector de Flores y resuelve si su cantidad de pétalos pertenece a la sucesión de Fibonacci
 void checkPetalsInFibonacci(const std::vector<Flower>& flowers, const std::vector<int>& coinc) {
-    #pragma omp parallel for // Paralelizar el bucle
+    #pragma omp parallel for
     for (size_t i = 0; i < flowers.size(); i++) {
         const auto& flower = flowers[i];
         if (isFibonacci(flower.petals, coinc)) {
-            #pragma omp critical // Sección crítica para evitar interferencias en la salida
+            #pragma omp critical // Evita interferencias en la salida
             {
                 cout << "La flor " << flower.name << " con " << flower.petals << " pétalos está en la sucesión de Fibonacci." << endl;
             }
         } else {
-            #pragma omp critical // Sección crítica para evitar interferencias en la salida
+            #pragma omp critical
             {
                 cout << "La flor " << flower.name << " con " << flower.petals << " pétalos NO está en la sucesión de Fibonacci." << endl;
             }
@@ -127,9 +149,6 @@ int main() {
     vector<int> fib = genFibonacci(n);
     vector<int> coinc = findCoincidences(randomVector, fib);
     
-    // Para el ejemplo número 2, calculamos las aproximaciones de la proporción áurea usando toda la secuencia de Fibonacci
-    vector<double> goldenRatioAprox = calcGoldenRatio(coinc);
-    
     cout << "Ejemplo 1:" << endl;
     cout << "Los números originales de la sucesión de Fibonacci son:" << endl;
     for (int num : fib) {
@@ -143,13 +162,19 @@ int main() {
     }
     cout << endl << endl;
     
-    // Ejemplo de las aproximaciones aureas mediante el calculo de la media
+    
+    
+     // Para el ejemplo número 2, calculamos las aproximaciones de la proporción áurea usando toda la secuencia de Fibonacci
+    vector<double> goldenRatioAprox = calcGoldenRatio(coinc);
     cout << "Ejemplo 2:" << endl;
     cout << "Las aproximaciones obtenidas de la Proporción Aurea son:" << endl;
     for (double num : goldenRatioAprox) {
         cout << num << " - ";
     }
     cout << endl << endl;
+    
+    
+    
     
     // Definición de flores
     vector<Flower> flowers = defineFlowers();
