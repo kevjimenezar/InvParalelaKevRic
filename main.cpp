@@ -77,6 +77,25 @@ vector<double> calcGoldenRatio(const vector<int>& fib) {
     return aproxs;
 }
 
+//Ejemplo 2: Lista de Flores y sus pétalos
+class Flower {
+    public:
+        std::string name;
+        int petals;
+    };
+    
+    std::vector<Flower> defineFlowers() {
+        return {
+            {"Margarita", 34},
+            {"Girasol", 55},
+            {"Rosa común", 5},
+            {"Lirio", 3},
+            {"Jacinto", 8},
+            {"Flor de loto", 13},
+            {"Margarita gigante", 89}
+        };
+    }
+
 int main() {
     int m = 1000000; // Tamaño del vector
     int n = 100000; // Rango de números aleatorios
@@ -108,6 +127,5 @@ int main() {
         cout << num << " - ";
     }
     cout << endl << endl;
-
     return 0;
 }
