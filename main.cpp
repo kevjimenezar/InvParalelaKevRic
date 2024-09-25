@@ -86,8 +86,9 @@ int main() {
     vector<int> coinc = findCoincidences(randomVector, fib);
     
     // Para el ejemplo número 2, calculamos las aproximaciones de la proporción áurea usando toda la secuencia de Fibonacci
-    vector<double> goldenRatioAprox = calcGoldenRatio(fib);
-
+    vector<double> goldenRatioAprox = calcGoldenRatio(coinc);
+    
+    cout << "Ejemplo 1:" << endl;
     cout << "Los números originales de la sucesión de Fibonacci son:" << endl;
     for (int num : fib) {
         cout << num << " ";
@@ -99,11 +100,12 @@ int main() {
         cout << num << " ";
     }
     cout << endl << endl;
-
-    cout << endl << endl;
-    cout << "Las aproximaciones de la Proporción Aurea son:" << endl;
+    
+    // Ejemplo de las aproximaciones aureas mediante el calculo de la media
+    cout << "Ejemplo 2:" << endl;
+    cout << "Las aproximaciones obtenidas de la Proporción Aurea son:" << endl;
     for (double num : goldenRatioAprox) {
-        cout << num << " ";
+        cout << num << " - ";
     }
     cout << endl << endl;
 
