@@ -77,7 +77,7 @@ vector<double> calcGoldenRatio(const vector<int>& fib) {
     return aproxs;
 }
 
-//Ejemplo 2: Lista de Flores y sus pétalos
+//Ejemplo Complementario
 class Flower {
     public:
         std::string name;
@@ -95,6 +95,29 @@ class Flower {
             {"Margarita gigante", 89}
         };
     }
+    
+    // Función para comprobar si los pétalos de una flor se encuentran en la suceción
+    bool isFibonacci(int petals, const vector<int>& coinc) {
+    return find(coinc.begin(), coinc.end(), petals) != coinc.end(); //Buscamos en la sucesión depurada
+}
+
+void checkPetalsInFibonacci(const std::vector<Flower>& flowers, const std::vector<int>& coinc) {
+    #pragma omp parallel for // Paralelizar el bucle
+    for (size_t i = 0; i < flowers.size(); i++) {
+        const auto& flower = flowers[i];
+        if (isFibonacci(flower.petals, coinc)) {
+            #pragma omp critical // Sección crítica para evitar interferencias en la salida
+            {
+                cout << "La flor " << flower.name << " con " << flower.petals << " pétalos está en la sucesión de Fibonacci." << endl;
+            }
+        } else {
+            #pragma omp critical // Sección crítica para evitar interferencias en la salida
+            {
+                cout << "La flor " << flower.name << " con " << flower.petals << " pétalos NO está en la sucesión de Fibonacci." << endl;
+            }
+        }
+    }
+}
 
 int main() {
     int m = 1000000; // Tamaño del vector
@@ -127,5 +150,10 @@ int main() {
         cout << num << " - ";
     }
     cout << endl << endl;
+    
+    // Definición de flores
+    vector<Flower> flowers = defineFlowers();
+    checkPetalsInFibonacci(flowers, coinc);
+     
     return 0;
 }
