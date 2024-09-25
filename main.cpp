@@ -3,7 +3,11 @@
 #include <random>
 #include <algorithm>
 #include <omp.h>
+#include <thread>
+#include <chrono>
 using namespace std;
+
+// Ejemplo 1: Elementos de la Sucesión de Fibonacci en una lista aleatoria
 
 // Función para generar un vector de números aleatorios
 vector<int> genVector(int m, int n) {
@@ -57,25 +61,51 @@ vector<int> findCoincidences(const vector<int>& vec, const vector<int>& fib) {
     return deleteDup(result);
 }
 
+// Ejemplo 2: Aproximaciones a la Proporción Áurea usando Fibonacci
+vector<double> calcGoldenRatio(const vector<int>& fib) {
+    vector<double> aproxs;
+    int size = fib.size();
+    
+    #pragma omp parallel for // Procesar en paralelo
+    for (int i = 2; i < size; i++) { // Comenzamos desde el tercer número
+        double ratio = static_cast<double>(fib[i]) / fib[i - 1]; // Calculo de la razón
+        #pragma omp critical // Sección crítica para evitar condiciones de carrera
+        {
+            aproxs.push_back(ratio);
+        }
+    }
+    return aproxs;
+}
 
 int main() {
-
     int m = 1000000; // Tamaño del vector
     int n = 100000; // Rango de números aleatorios
 
     vector<int> randomVector = genVector(m, n);
     vector<int> fib = genFibonacci(n);
-    vector<int> coinc = findCoincidences(randomVector,fib);
+    vector<int> coinc = findCoincidences(randomVector, fib);
+    
+    // Para el ejemplo número 2, calculamos las aproximaciones de la proporción áurea usando toda la secuencia de Fibonacci
+    vector<double> goldenRatioAprox = calcGoldenRatio(fib);
 
-    cout<<"Los números originales de la sucesión de Fibonacci son:"<<endl;
+    cout << "Los números originales de la sucesión de Fibonacci son:" << endl;
     for (int num : fib) {
         cout << num << " ";
     }
 
-    cout<<endl<<endl;
-    cout<<"Los números que contrastados coinciden con la suceción de Fibonacci son:"<<endl;
+    cout << endl << endl;
+    cout << "Los números que contrastados coinciden con la suceción de Fibonacci son:" << endl;
     for (int num : coinc) {
         cout << num << " ";
     }
+    cout << endl << endl;
+
+    cout << endl << endl;
+    cout << "Las aproximaciones de la Proporción Aurea son:" << endl;
+    for (double num : goldenRatioAprox) {
+        cout << num << " ";
+    }
+    cout << endl << endl;
+
     return 0;
 }
