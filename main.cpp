@@ -44,13 +44,13 @@ vector<int> deleteDup(vector<int>& result) {
 }
 
 // Función para encontrar los numeros de fibonacci en el vector random
-vector<int> findCoincidences(const vector<int>& vec, const vector<int>& fib) {
+vector<int> findCoincidences(const vector<int>& vec, const vector<int>& fib,const int& limit) {
     vector<int> result;
-    #pragma omp parallel default(none) shared(vec, fib, result) // Inicio del proceso en paralelo
+    #pragma omp parallel default(none) shared(vec, fib, result, limit) // Inicio del proceso en paralelo
     {
         #pragma omp for // Se procesa ya en paralelo el bucle for
         for (int num: vec) {
-            if (find(fib.begin(), fib.end(), num) != fib.end() && num <= 89) { // Verificacion ya que si no se encuentra devuelve el final de fib y limite
+            if (find(fib.begin(), fib.end(), num) != fib.end() && num <= limit) { // Verificacion ya que si no se encuentra devuelve el final de fib y limite
                 #pragma omp critical // Proporciona seguridad de acceso al vector con varios hilos
                 {
                     result.push_back(num);
@@ -145,10 +145,11 @@ void checkPetalsInFibonacci(const std::vector<Flower>& flowers, const std::vecto
 int main() {
     int m = 1000000; // Tamaño del vector
     int n = 100000; // Rango de números aleatorios
+    int limit = 89;
 
     vector<int> randomVector = genVector(m, n);
     vector<int> fib = genFibonacci(n);
-    vector<int> coinc = findCoincidences(randomVector, fib);
+    vector<int> coinc = findCoincidences(randomVector, fib, limit);
     
     cout << "Ejemplo 1:" << endl;
     cout << "Los numeros originales de la sucesion de Fibonacci son:" << endl;
