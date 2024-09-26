@@ -50,7 +50,7 @@ vector<int> findCoincidences(const vector<int>& vec, const vector<int>& fib) {
     {
         #pragma omp for // Se procesa ya en paralelo el bucle for
         for (int num: vec) {
-            if (find(fib.begin(), fib.end(), num) != fib.end()) { // Verificacion ya que si no se encuentra devuelve el final de fib
+            if (find(fib.begin(), fib.end(), num) != fib.end() && num <= 89) { // Verificacion ya que si no se encuentra devuelve el final de fib y limite
                 #pragma omp critical // Proporciona seguridad de acceso al vector con varios hilos
                 {
                     result.push_back(num);
@@ -103,6 +103,7 @@ class Flower {
         {"Campanilla", 5},
         {"Pensamiento", 5},
         {"Geranio", 5},
+        {"Girasol gigante", 89},
         {"Violeta", 5}
     };
 }
