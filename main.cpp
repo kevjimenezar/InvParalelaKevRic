@@ -86,7 +86,7 @@ class Flower {
     
     std::vector<Flower> defineFlowers() {
     return {
-        {"Margarita común", 13},
+        {"Margarita comun", 13},
         {"Margarita gigante", 34},
         {"Girasol", 55},
         {"Rosa", 5},
@@ -97,7 +97,7 @@ class Flower {
         {"Amapola", 4},
         {"Dalia", 13},
         {"Crisantemo", 13},
-        {"Orquídea", 3},
+        {"Orquidea", 3},
         {"Azucena", 6},
         {"Clavel", 5},
         {"Campanilla", 5},
@@ -130,12 +130,12 @@ void checkPetalsInFibonacci(const std::vector<Flower>& flowers, const std::vecto
         if (isFibonacci(flower.petals, coinc)) {
             #pragma omp critical // Evita interferencias en la salida
             {
-                cout << "La flor " << flower.name << " con " << flower.petals << " pétalos está en la sucesión de Fibonacci." << endl;
+                cout << "La flor " << flower.name << " con " << flower.petals << " petalos esta en la sucesion de Fibonacci." << endl;
             }
         } else {
             #pragma omp critical
             {
-                cout << "La flor " << flower.name << " con " << flower.petals << " pétalos NO está en la sucesión de Fibonacci." << endl;
+                cout << "La flor " << flower.name << " con " << flower.petals << " petalos NO esta en la sucesion de Fibonacci." << endl;
             }
         }
     }
@@ -150,13 +150,13 @@ int main() {
     vector<int> coinc = findCoincidences(randomVector, fib);
     
     cout << "Ejemplo 1:" << endl;
-    cout << "Los números originales de la sucesión de Fibonacci son:" << endl;
+    cout << "Los numeros originales de la sucesion de Fibonacci son:" << endl;
     for (int num : fib) {
         cout << num << " ";
     }
 
     cout << endl << endl;
-    cout << "Los números que contrastados coinciden con la suceción de Fibonacci son:" << endl;
+    cout << "Los numeros que contrastados coinciden con la sucecion de Fibonacci son:" << endl;
     for (int num : coinc) {
         cout << num << " ";
     }
